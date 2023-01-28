@@ -1,0 +1,41 @@
+import numpy as np
+
+def segmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+traning_inputs = np.array([[0,0,1],
+                           [1,1,1],
+                           [1,0,1],
+                           [0,1,1]])
+
+traning_outputs = np.array([[0,1,1,0]]).T
+
+np.random.seed(1)
+
+synaptic_w = 2 * np.random.random((3,1)) -1
+
+print("случайные инициализ. веса:")
+print(synaptic_w)
+
+for i in range(20000):
+
+    input_l = traning_inputs
+    outputs = segmoid( np.dot(input_l,synaptic_w))
+
+    err = traning_outputs - outputs
+    adjustments =np.dot( input_l.T, err * (outputs * (1 - outputs)))
+
+    synaptic_w += adjustments
+
+print("веса после обучения: ")
+print(synaptic_w)
+
+print("результат: ")
+print(outputs)
+
+
+new_inputs = np.array([1,0,0])
+output = segmoid( np.dot( new_inputs, synaptic_w))
+
+print("новая ситуация: ")
+print(output)
